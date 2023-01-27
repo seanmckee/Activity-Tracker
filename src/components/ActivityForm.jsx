@@ -8,12 +8,12 @@ const style = {
 }
 
 
-const ActivityForm = () => {
+const ActivityForm = ({descriptionInput, setDescriptionInput, hourInput, setHourInput, minuteInput, setMinuteInput, activitySubmit}) => {
   return (
-    <form className={style.form}>
-        <input className={style.activity} type="text" placeholder="enter new activity" />
-        <input className={style.time} type="number" placeholder="hours" maxLength="2" />
-        <input className={style.time} type="number" placeholder="minutes" maxLength="2" />
+    <form  onSubmit={activitySubmit} className={style.form}>
+        <input value={descriptionInput} onChange={(e) => setDescriptionInput(e.target.value)} className={style.activity} type="text" placeholder="enter new activity" />
+        <input value={hourInput} onChange={(e) => setHourInput(e.target.value)} className={style.time} type="number" placeholder="hours" maxLength="2" />
+        <input value={minuteInput} onChange={(e) => setMinuteInput(e.target.value)} className={style.time} type="number" placeholder="minutes" maxLength="2" />
         <button className={style.create} type="submit">Create</button>
     </form>
   )

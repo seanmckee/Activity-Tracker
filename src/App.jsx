@@ -16,6 +16,10 @@ function App() {
 
   const [activities, setActivities] = useState([])
 
+  const [descriptionInput, setDescriptionInput] = useState('')
+  const [hourInput, setHourInput] = useState(0)
+  const [minuteInput, setMinuteInput] = useState(0)
+
   // const activities = [
   //   {
   //     description: "study for interviews",
@@ -31,6 +35,21 @@ function App() {
 
 
 // Create
+const createActivity = async (e) => {
+  e.preventDefault(e)
+  if(descriptionInput==='' || (hourInput === 0 && minuteInput === 0)){
+    alert("Please fill out all fields")
+    return
+  }
+  await addDoc(collection(db, 'activities'), {
+    description: descriptionInput,
+    hours: hourInput,
+    minutes: minuteInput,
+  })
+  setDescriptionInput('')
+  setHourInput(0)
+  setMinuteInput(0)
+}
 
 // Read
 useEffect(() => {
@@ -50,19 +69,30 @@ useEffect(() => {
 
 
 // Delete
+const deleteActivity = async (id) => {
+  await deleteDoc(doc(db, 'activities', id))
+}
 
 
   return (
     <div className={style.bg}>
       <div className={style.container}>
         <h1 className={style.title}>Activity Tracker</h1>
-        <ActivityForm />
+        <ActivityForm 
+          descriptionInput={descriptionInput}
+          setDescriptionInput={setDescriptionInput}
+          hourInput={hourInput}
+          setHourInput={setHourInput}
+          minuteInput={minuteInput}
+          setMinuteInput={setMinuteInput}
+          activitySubmit={createActivity}
+        />
 
         <ul>
           {
           
           activities.map((activity, index) => (
-            <Activity key={index} activity={activity} />
+            <Activity key={index} activity={activity} deleteActivity={deleteActivity} />
           ))}
         </ul>
 
