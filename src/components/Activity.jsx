@@ -1,6 +1,7 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import {BsTrash, BsPlay} from "react-icons/bs"
 import {MdOutlineDelete} from "react-icons/md"
+
 
 const style = {
     activity: `flex justify-items-center border rounded-md p-5 m-2`,
@@ -15,12 +16,57 @@ const style = {
 
 const Activity = ({activity, deleteActivity}) => {
 
-  const [started, setStarted] = useState(false)
+ 
 
+  // useEffect(() => {
+  //   const timer = seconds > 0 && setInterval(() => setSeconds(seconds -1), 1000)
+  //   return ()=> clearInterval(timer)
+  // }, [seconds])
+
+
+
+  // const startTimer = () => {
+  //   setInterval(() => {
+  //       setSeconds(seconds => seconds - 1)
+  //   }, 1000)
+  // }
+
+  // const stopTimer = () => {
+  //   clearInterval(startTimer)
+  // }
+
+  const [started, setStarted] = useState(false)
+  const [seconds, setSeconds] = useState(((activity.hours*3600)+(activity.minutes*60)))
+
+  // let timer
+  // const handleStart = () => {
+  //   timer = setInterval(() => (setSeconds(prevSecond => prevSecond -1)), 1000)  
+  //   setStarted(true)
+  // }
+
+  // const handleStop = () => {
+  //   clearInterval(timer)
+  //   setStarted(false)
+    
+  // }
+  let timer
   const handleStart = () => {
-    setStarted((current) => !current)
+    timer = setInterval(tick, 1000);
+    setStarted(true)
   }
 
+  const handleStop = () => {
+    clearInterval(timer)
+    setStarted(false)
+  }
+
+  function tick() {
+    console.log("tick");
+  }
+
+  
+
+  
   return (
     
     <div className={style.activity}>
@@ -29,13 +75,11 @@ const Activity = ({activity, deleteActivity}) => {
         <h1 className={style.description}>{activity.description}</h1>
       </div>
         
-        
-
         <div className={style.buttons}>
           <h1 className={style.time}>{`${activity.hours}:${activity.minutes}`}</h1>
 
-            { started ? <button onClick={handleStart} className={style.start}>Start</button>
-             : <button onClick={handleStart} className={style.stop}>Stop</button>}
+            { !started ? <button onClick={handleStart} className={style.start}>Start</button>
+             : <button onClick={handleStop} className={style.stop}>Stop</button>}
                 
             <button onClick={() => deleteActivity(activity.id)} className={style.delete}>Delete</button>
         </div>
