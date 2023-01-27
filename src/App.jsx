@@ -45,6 +45,7 @@ const createActivity = async (e) => {
     description: descriptionInput,
     hours: hourInput,
     minutes: minuteInput,
+    seconds: 0
   })
   setDescriptionInput('')
   setHourInput(0)

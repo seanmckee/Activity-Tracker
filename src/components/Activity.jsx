@@ -38,17 +38,7 @@ const Activity = ({activity, deleteActivity}) => {
   const [started, setStarted] = useState(false)
   const [seconds, setSeconds] = useState(((activity.hours*3600)+(activity.minutes*60)))
 
-  // let timer
-  // const handleStart = () => {
-  //   timer = setInterval(() => (setSeconds(prevSecond => prevSecond -1)), 1000)  
-  //   setStarted(true)
-  // }
-
-  // const handleStop = () => {
-  //   clearInterval(timer)
-  //   setStarted(false)
-    
-  // }
+  
  
   const handleStart = () => {
     setStarted(true)
@@ -63,6 +53,7 @@ const Activity = ({activity, deleteActivity}) => {
     if(started) {
       interval = setInterval(() => {
         setSeconds(seconds => seconds -1)
+        formatTime()
       }, 1000)
     } else if (!started){
       clearInterval(interval)
@@ -71,7 +62,11 @@ const Activity = ({activity, deleteActivity}) => {
   }, [started, seconds])
 
 
-
+  const formatTime = () => {
+    activity.hours = Math.trunc(seconds/3600)
+    activity.minutes = Math.trunc((seconds%3600)/60)
+    activity.seconds = Math.trunc(((seconds%3600)%60))
+  }
   
 
   
@@ -84,7 +79,7 @@ const Activity = ({activity, deleteActivity}) => {
       </div>
         
         <div className={style.buttons}>
-          <h1 className={style.time}>{`${activity.hours}:${activity.minutes}`}</h1>
+          <h1 className={style.time}>{`${activity.hours}:${activity.minutes}:${activity.seconds}`}</h1>
 
             { !started ? <button onClick={handleStart} className={style.start}>Start</button>
              : <button onClick={handleStop} className={style.stop}>Stop</button>}
