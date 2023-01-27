@@ -49,20 +49,28 @@ const Activity = ({activity, deleteActivity}) => {
   //   setStarted(false)
     
   // }
-  let timer
+ 
   const handleStart = () => {
-    timer = setInterval(tick, 1000);
     setStarted(true)
   }
 
   const handleStop = () => {
-    clearInterval(timer)
     setStarted(false)
   }
 
-  function tick() {
-    console.log("tick");
-  }
+  useEffect(() => {
+    let interval = null
+    if(started) {
+      interval = setInterval(() => {
+        setSeconds(seconds => seconds -1)
+      }, 1000)
+    } else if (!started){
+      clearInterval(interval)
+    }
+    return () => clearInterval(interval)
+  }, [started, seconds])
+
+
 
   
 
