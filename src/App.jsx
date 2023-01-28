@@ -20,20 +20,6 @@ function App() {
   const [hourInput, setHourInput] = useState(0)
   const [minuteInput, setMinuteInput] = useState(0)
 
-  // const activities = [
-  //   {
-  //     description: "study for interviews",
-  //     hours: 4,
-  //     minutes: 30
-  //   },
-  //   {
-  //     description: "watch anime",
-  //     hours: 2,
-  //     minutes:30
-  //   }
-  // ]
-
-
 // Create
 const createActivity = async (e) => {
   e.preventDefault(e)
@@ -45,7 +31,8 @@ const createActivity = async (e) => {
     description: descriptionInput,
     hours: hourInput,
     minutes: minuteInput,
-    seconds: 0
+    seconds: 0,
+    outOfTime: false
   })
   setDescriptionInput('')
   setHourInput(0)
@@ -67,7 +54,13 @@ useEffect(() => {
 
 
 // Update
-
+const saveTime = async (activity) => {
+  await updateDoc(doc(db, 'activities', activity.id), {
+    hours: activity.hours,
+    minutes: activity.minutes,
+    seconds: activity.seconds
+  })
+}
 
 // Delete
 const deleteActivity = async (id) => {
@@ -93,7 +86,7 @@ const deleteActivity = async (id) => {
           {
           
           activities.map((activity, index) => (
-            <Activity key={index} activity={activity} deleteActivity={deleteActivity} />
+            <Activity key={index} activity={activity} deleteActivity={deleteActivity} saveTime={saveTime}/>
           ))}
         </ul>
 

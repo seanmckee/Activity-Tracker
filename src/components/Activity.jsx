@@ -14,38 +14,18 @@ const style = {
 }
 
 
-const Activity = ({activity, deleteActivity}) => {
-
- 
-
-  // useEffect(() => {
-  //   const timer = seconds > 0 && setInterval(() => setSeconds(seconds -1), 1000)
-  //   return ()=> clearInterval(timer)
-  // }, [seconds])
-
-
-
-  // const startTimer = () => {
-  //   setInterval(() => {
-  //       setSeconds(seconds => seconds - 1)
-  //   }, 1000)
-  // }
-
-  // const stopTimer = () => {
-  //   clearInterval(startTimer)
-  // }
+const Activity = ({activity, deleteActivity, saveTime}) => {
 
   const [started, setStarted] = useState(false)
   const [seconds, setSeconds] = useState(((activity.hours*3600)+(activity.minutes*60)))
 
-  
- 
   const handleStart = () => {
     setStarted(true)
   }
 
   const handleStop = () => {
     setStarted(false)
+    saveTime(activity)
   }
 
   useEffect(() => {
@@ -69,7 +49,6 @@ const Activity = ({activity, deleteActivity}) => {
   }
   
 
-  
   return (
     
     <div className={style.activity}>
@@ -79,17 +58,16 @@ const Activity = ({activity, deleteActivity}) => {
       </div>
         
         <div className={style.buttons}>
-          <h1 className={style.time}>{`${activity.hours}:${activity.minutes}:${activity.seconds}`}</h1>
+          <h1 className={style.time}>
+            {`${activity.hours}:${activity.minutes.toString().length === 1 ? "0"+activity.minutes : activity.minutes}`}
+              :{activity.seconds.toString().length === 1 ? "0"+activity.seconds : activity.seconds}
+          </h1>
 
             { !started ? <button onClick={handleStart} className={style.start}>Start</button>
              : <button onClick={handleStop} className={style.stop}>Stop</button>}
                 
             <button onClick={() => deleteActivity(activity.id)} className={style.delete}>Delete</button>
-        </div>
-
-       
-        
-        
+        </div> 
     </div>
   )
 }
