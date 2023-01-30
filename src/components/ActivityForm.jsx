@@ -9,11 +9,18 @@ const style = {
 
 
 const ActivityForm = ({descriptionInput, setDescriptionInput, hourInput, setHourInput, minuteInput, setMinuteInput, activitySubmit}) => {
+
+  document.querySelectorAll('input[type="number"]').forEach(input => {
+    input.oninput = () => {
+      if(input.value.length > input.maxLength) input.value = input.value.slice(0, input.maxLength)
+    }
+  })
+
   return (
     <form  onSubmit={activitySubmit} className={style.form}>
         <input value={descriptionInput} onChange={(e) => setDescriptionInput(e.target.value)} className={style.activity} type="text" placeholder="enter new activity" />
-        <input value={hourInput} onChange={(e) => setHourInput(e.target.value)} className={style.time} type="number" placeholder="hours" maxLength="2" />
-        <input value={minuteInput} onChange={(e) => setMinuteInput(e.target.value)} className={style.time} type="number" placeholder="minutes" maxLength="2" />
+        <input maxLength="2" min="0" max="23"  onChange={(e) => setHourInput(e.target.value)} className={style.time} type="number" placeholder="hours" />
+        <input maxLength="2" min="0" max="59"  onChange={(e) => setMinuteInput(e.target.value)} className={style.time} type="number" placeholder="minutes" />
         <button className={style.create} type="submit">Create</button>
     </form>
   )
